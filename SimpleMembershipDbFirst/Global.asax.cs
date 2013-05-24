@@ -9,6 +9,8 @@ using System.Web.Routing;
 
 namespace SimpleMembershipDbFirst
 {
+    using WebMatrix.WebData;
+
     // Note: For instructions on enabling IIS6 or IIS7 classic mode, 
     // visit http://go.microsoft.com/?LinkId=9394801
 
@@ -23,6 +25,20 @@ namespace SimpleMembershipDbFirst
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             AuthConfig.RegisterAuth();
+
+            // Initialize SimpleMembership DB
+            try
+            {
+                if (!WebSecurity.Initialized)
+                {
+                    WebSecurity.InitializeDatabaseConnection(
+                        "DefaultConnection", "UserProfile", "UserId", "UserName", autoCreateTables: false);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException("The ASP.NET Simple Membership database could not be initialized. For more information, please see http://go.microsoft.com/fwlink/?LinkId=256588", ex);
+            }
         }
     }
 }

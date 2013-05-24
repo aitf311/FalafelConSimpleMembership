@@ -8,7 +8,6 @@ using System.Web.Security;
 using DotNetOpenAuth.AspNet;
 using Microsoft.Web.WebPages.OAuth;
 using WebMatrix.WebData;
-using SimpleMembershipDbFirst.Filters;
 using SimpleMembershipDbFirst.Models;
 
 namespace SimpleMembershipDbFirst.Controllers
@@ -16,7 +15,6 @@ namespace SimpleMembershipDbFirst.Controllers
     using System.Data.Entity;
 
     [Authorize]
-    [InitializeSimpleMembership]
     public class AccountController : Controller
     {
         //
