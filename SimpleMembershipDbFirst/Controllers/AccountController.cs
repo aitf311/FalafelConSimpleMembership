@@ -40,6 +40,7 @@ namespace SimpleMembershipDbFirst.Controllers
                 return RedirectToLocal(returnUrl);
             }
 
+
             // If we got this far, something failed, redisplay form
             ModelState.AddModelError("", "The user name or password provided is incorrect.");
             return View(model);

@@ -9,6 +9,8 @@ using System.Web.Routing;
 
 namespace SimpleMembershipDbFirst
 {
+    using System.Web.Security;
+
     using WebMatrix.WebData;
 
     // Note: For instructions on enabling IIS6 or IIS7 classic mode, 
@@ -33,6 +35,17 @@ namespace SimpleMembershipDbFirst
                 {
                     WebSecurity.InitializeDatabaseConnection(
                         "DefaultConnection", "UserProfile", "UserId", "UserName", autoCreateTables: false);
+
+                    // Seed Admin Role and User
+                    if (!Roles.RoleExists("Administrators"))
+                    {
+                        Roles.CreateRole("Administrators");
+                    }
+                    if (!WebSecurity.UserExists("admin"))
+                    {
+                        WebSecurity.CreateUserAndAccount("admin", "password", propertyValues: new { FirstName = "Administrator" });
+                        Roles.AddUserToRole("admin", "Administrators");
+                    }
                 }
             }
             catch (Exception ex)
