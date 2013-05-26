@@ -14,6 +14,8 @@ namespace SimpleMembershipDbFirst.Controllers
 {
     using System.Data.Entity;
 
+    using SimpleMembershipDbFirst.Helpers;
+
     [Authorize]
     public class AccountController : Controller
     {
@@ -80,9 +82,13 @@ namespace SimpleMembershipDbFirst.Controllers
                 // Attempt to register the user
                 try
                 {
-                    WebSecurity.CreateUserAndAccount(model.UserName, model.Password, propertyValues: new { model.FirstName, model.LastName });
+                    var token = WebSecurity.CreateUserAndAccount(model.UserName, model.Password, propertyValues: new { model.FirstName, model.LastName, model.Email }, requireConfirmationToken: true);
                     WebSecurity.Login(model.UserName, model.Password);
-                    return RedirectToAction("Index", "Home");
+
+                    // Email confirmation token
+                    EmailHelper.SendEmail(model.Email, "Confirm Your Account", string.Format("Your confirmation token is {0}", token));
+
+                    return RedirectToAction("ConfirmAccount", "Account", new { token = token});
                 }
                 catch (MembershipCreateUserException e)
                 {
@@ -93,6 +99,33 @@ namespace SimpleMembershipDbFirst.Controllers
             // If we got this far, something failed, redisplay form
             return View(model);
         }
+
+        [AllowAnonymous]
+        public ActionResult ConfirmAccount()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public ActionResult ConfirmAccount(ConfirmAccountModel model)
+        {
+            if (WebSecurity.ConfirmAccount(model.Token))
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            else
+            {
+                ModelState.AddModelError("", "Invalid confirmation token");
+            }
+            return View(model);
+        }
+
+        //public ActionResult ForgotPassword()
+        //{
+        //    WebSecurity.
+        //}
 
         //
         // POST: /Account/Disassociate
@@ -272,7 +305,7 @@ namespace SimpleMembershipDbFirst.Controllers
                     if (user == null)
                     {
                         // Insert name into the profile table
-                        db.UserProfiles.Add(new UserProfile { UserName = model.UserName, FirstName = model.FirstName, LastName = model.LastName });
+                        db.UserProfiles.Add(new UserProfile { UserName = model.UserName, FirstName = model.FirstName, LastName = model.LastName, Email = model.Email });
                         db.SaveChanges();
 
                         OAuthWebSecurity.CreateOrUpdateAccount(provider, providerUserId, model.UserName);

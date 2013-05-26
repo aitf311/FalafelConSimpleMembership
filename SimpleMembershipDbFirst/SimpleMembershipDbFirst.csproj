@@ -189,6 +189,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\EmailHelper.cs" />
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\DemoModel.Context.cs">
       <AutoGen>True</AutoGen>
@@ -351,6 +352,7 @@
     <Content Include="Views\Web.config" />
     <Content Include="Views\Secure\Index.cshtml" />
     <Content Include="Views\Secure\AdminOnly.cshtml" />
+    <Content Include="Views\Account\ConfirmAccount.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

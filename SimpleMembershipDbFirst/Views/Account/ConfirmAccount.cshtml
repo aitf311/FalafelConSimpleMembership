@@ -1,0 +1,34 @@
+﻿@model SimpleMembershipDbFirst.Models.ConfirmAccountModel
+
+@{
+    ViewBag.Title = "Confirm Account";
+}
+
+<hgroup class="title">
+    <h1>@ViewBag.Title.</h1>
+</hgroup>
+
+<section id="loginForm">
+@using (Html.BeginForm(new { ReturnUrl = ViewBag.ReturnUrl })) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Confirm Your Account</legend>
+        <ol>
+            <li>
+                @Html.LabelFor(m => m.Token)
+                @Html.TextBoxFor(m => m.Token)
+                @Html.ValidationMessageFor(m => m.Token)
+            </li>
+        </ol>
+        <input type="submit" value="Confirm" />
+    </fieldset>
+
+}
+</section>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
