@@ -23,6 +23,9 @@ namespace SimpleMembershipDbFirst.Controllers
         [Authorize(Roles = "Administrators")]
         public ActionResult AdminOnly()
         {
+            // Use attribute, or:
+            //WebSecurity.RequireRoles(new [] { "Administrators" });
+
             return View();
         }
     }

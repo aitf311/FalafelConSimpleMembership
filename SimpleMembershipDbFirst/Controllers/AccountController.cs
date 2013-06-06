@@ -122,10 +122,22 @@ namespace SimpleMembershipDbFirst.Controllers
             return View(model);
         }
 
-        //public ActionResult ForgotPassword()
-        //{
-        //    WebSecurity.
-        //}
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public ActionResult ForgotPassword()
+        {
+            // Generate Token and send via email
+            //WebSecurity.GeneratePasswordResetToken("");
+            
+            // Use reset token to set new password
+            //WebSecurity.ResetPassword();
+
+            // Get UserId from ResetToken, if needed
+            //WebSecurity.GetUserIdFromPasswordResetToken();
+
+            return RedirectToAction("Index", "Home");
+        }
 
         //
         // POST: /Account/Disassociate
@@ -235,6 +247,9 @@ namespace SimpleMembershipDbFirst.Controllers
             return View(model);
         }
 
+
+        #region OAuth Actions
+
         //
         // POST: /Account/ExternalLogin
 
@@ -253,6 +268,7 @@ namespace SimpleMembershipDbFirst.Controllers
         public ActionResult ExternalLoginCallback(string returnUrl)
         {
             AuthenticationResult result = OAuthWebSecurity.VerifyAuthentication(Url.Action("ExternalLoginCallback", new { ReturnUrl = returnUrl }));
+
             if (!result.IsSuccessful)
             {
                 return RedirectToAction("ExternalLoginFailure");
@@ -362,6 +378,8 @@ namespace SimpleMembershipDbFirst.Controllers
             ViewBag.ShowRemoveButton = externalLogins.Count > 1 || OAuthWebSecurity.HasLocalAccount(WebSecurity.GetUserId(User.Identity.Name));
             return PartialView("_RemoveExternalLoginsPartial", externalLogins);
         }
+
+        #endregion
 
         [AllowAnonymous]
         public PartialViewResult _LoginPartial()

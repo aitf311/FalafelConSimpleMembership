@@ -27,6 +27,12 @@ namespace SimpleMembershipDbFirst
             //    appId: "",
             //    appSecret: "");
 
+            //OAuthWebSecurity.RegisterLinkedInClient(
+            //    consumerKey: "",
+            //    consumerSecret: "");
+
+            //OAuthWebSecurity.RegisterYahooClient();
+
             OAuthWebSecurity.RegisterGoogleClient();
         }
     }
