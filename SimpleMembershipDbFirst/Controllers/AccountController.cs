@@ -113,7 +113,7 @@ namespace SimpleMembershipDbFirst.Controllers
         {
             if (WebSecurity.ConfirmAccount(model.Token))
             {
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Login", "Account");
             }
             else
             {
@@ -128,7 +128,7 @@ namespace SimpleMembershipDbFirst.Controllers
         public ActionResult ForgotPassword()
         {
             // Generate Token and send via email
-            //WebSecurity.GeneratePasswordResetToken("");
+            //WebSecurity.GeneratePasswordResetToken();
             
             // Use reset token to set new password
             //WebSecurity.ResetPassword();
